@@ -1,0 +1,39 @@
+Посыпаю голову пеплом, но на момент написания статьи я ещё не работал с системами сборки. Я запускаю вручную из консоли, но то же самое можно делать из IDE.
+
+1. Компилируем файлы: в корневой директории проекта создаём папку bin/ и выполняем javac -d bin/ -cp src/ src/main/Main.java Параметр -d - путь, куда складывать .class файлы; -cp - путь к исходникам; в конце путь к классу с методом main.
+
+2. Запускаем сервер. Заходим в папку bin/ и выполняем java main.Main. Запускает программа, вводим S или Server.
+
+3. Запускаем клиент. В новом окне консоли выполняем java main.Main из папки bin/ и вводим C или Client. IP - 127.0.0.1, т.к. сервер запущен на той же машине.
+
+В IDE всё то же самое - скомпилировать, запустить два экземпляра (сервер и клиент). Можно больше, если нужно несколько клиентов.
+
+
+Весь процесс сборки/запуска, на всякий случай.
+
+Vlad@VLAD-PC /d/Projects/Java/archive/Console_Chat (master)
+$ mkdir bin
+Vlad@VLAD-PC /d/Projects/Java/archive/Console_Chat (master)
+$ javac -d bin/ -cp src/ src/main/Main.java
+Vlad@VLAD-PC /d/Projects/Java/archive/Console_Chat (master)
+$ cd bin
+Vlad@VLAD-PC /d/Projects/Java/archive/Console_Chat/bin (master)
+$ java main.Main
+Запустить программу в режиме сервера или клиента? (S(erver) / C(lient))
+S
+
+В другом окне запуск клиента:
+Vlad@VLAD-PC /d/Projects/Java/archive/Console_Chat (master)
+$ cd bin
+Vlad@VLAD-PC /d/Projects/Java/archive/Console_Chat/bin (master)
+$ java main.Main
+Запустить программу в режиме сервера или клиента? (S(erver) / C(lient))
+C
+Введите IP для подключения к серверу.
+Формат: xxx.xxx.xxx.xxx
+127.0.0.1
+Введите свой ник:
+Client1
+Client1 cames now
+Hi
+Client1: Hi
