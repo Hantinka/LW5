@@ -12,7 +12,6 @@ import java.util.List;
 import main.Const;
 /**
  * Created by Irina on 20.09.2016.
- * Обеспечивает работу программы в режиме сервера
  */
 public class Server {
     private List<Connection> connections = Collections.synchronizedList(new ArrayList<Connection>());
