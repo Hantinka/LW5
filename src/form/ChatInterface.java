@@ -1,6 +1,7 @@
 package form;
 import main.Const;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -15,15 +16,17 @@ import java.net.Socket;
  */
 public class ChatInterface extends JFrame {
     private JPanel ChatInterface;
+    private JScrollPane scrollPane;
     private JButton connectButton;
     private JTextField serverIPTextField;
     private JTextField yourNicknameTextField;
-    public JTextArea chatTextArea;
+    private JTextArea chatTextArea;
     private JTextArea yourMessageTextArea;
     private JButton sendMessageButton;
     private BufferedReader in;
     private PrintWriter out;
     private Socket socket;
+
     String ip;
     String nickname;
 
@@ -56,6 +59,9 @@ public class ChatInterface extends JFrame {
                     System.out.println("Ошибка при подключении к серверу и получению потоков (in и out) для передачи сообщений");
                     e1.printStackTrace();
                 }
+                connectButton.setVisible(false);
+                serverIPTextField.setEnabled(false);
+                yourNicknameTextField.setEnabled(false);
             }
         });
 

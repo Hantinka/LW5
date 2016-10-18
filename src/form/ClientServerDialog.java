@@ -30,7 +30,6 @@ public class ClientServerDialog extends JFrame {
                 new Server();
             }
         });
-
         setVisible(true);
     }
 }
