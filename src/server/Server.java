@@ -1,15 +1,16 @@
 package server;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+
+import main.Const;
+import org.apache.commons.io.IOUtils;
+
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import main.Const;
+
 /**
  * Created by Irina on 20.09.2016.
  */
@@ -52,13 +53,20 @@ public class Server {
         private PrintWriter out;
         private Socket socket;
         private String name = "";
+        private FileInputStream inputFile;
 
         public Connection(Socket socket) {
             this.socket = socket;
             try {
-                in = new BufferedReader(new InputStreamReader(
-                        socket.getInputStream()));
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out = new PrintWriter(socket.getOutputStream(), true);
+
+                File file = new File("input.txt");
+                inputFile = new FileInputStream(file);
+                byte[] toByteArray = IOUtils.toByteArray(inputFile);
+                System.out.println("Server is ok after file reading.");
+                socket.getOutputStream().write(toByteArray);
+
 
             } catch (IOException e) {
                 System.out.println("Ошибка при создании сокета");
@@ -75,7 +83,7 @@ public class Server {
                 synchronized(connections) {
                     Iterator<Connection> iter = connections.iterator();
                     while(iter.hasNext()) {
-                        ((Connection) iter.next()).out.println(name + " cames now");
+                        ((Connection) iter.next()).out.println(" * " +name + " comes now" + " / ");
                     }
                 }
             } catch (IOException e) {

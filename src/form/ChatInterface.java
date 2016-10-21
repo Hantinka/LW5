@@ -1,16 +1,16 @@
 package form;
+
 import main.Const;
+
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
+import java.util.Scanner;
+
 /**
  * Created by Irina on 20.09.2016.
  */
@@ -26,6 +26,7 @@ public class ChatInterface extends JFrame {
     private BufferedReader in;
     private PrintWriter out;
     private Socket socket;
+    private DataOutputStream outputStream;
 
     String ip;
     String nickname;
@@ -53,6 +54,9 @@ public class ChatInterface extends JFrame {
                     in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     out = new PrintWriter(socket.getOutputStream(), true);
                     out.println(nickname);
+
+
+
                     ReSender reader = new ReSender();
                     reader.start();
                 } catch (Exception e1) {
@@ -69,7 +73,8 @@ public class ChatInterface extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String str = yourMessageTextArea.getText();
-                out.println(str);
+                out.println(" * " + str + " / ");
+
             }
         });
 
@@ -113,12 +118,46 @@ public class ChatInterface extends JFrame {
 
         @Override
         public void run() {
+
             try {
-                while (!stoped) {
-                    String str = in.readLine();
-                    chatTextArea.append(str);
-                    chatTextArea.append("\n");
+
+               // while (!stoped) {
+                    //String str = in.readLine();
+
+                            
+                Scanner sc = new Scanner(in);
+                String str = sc.next();
+                while (sc.hasNext()) {
+                for (int i = 0; i < str.length(); i++) {
+                    if (str.charAt(i) == '*') {
+                        while (str.charAt(i) != '/') {
+
+                            chatTextArea.append(str);
+                            chatTextArea.append("\n");
+
+                            System.out.println(str + " Это текстовое сообщение");
+                        }
+
+
+                    } else {
+                        if (str.charAt(i) != '*') {
+                            while (str.charAt(i) != '*') {
+                                outputStream = new DataOutputStream(new FileOutputStream("output.txt"));
+                                outputStream.writeBytes(str);
+
+                                System.out.println(str + " Это текст из файла");
+
+                            }
+                        }
+                    }
                 }
+                }
+                sc.close();
+
+                    //}
+                    //System.out.println(str);
+               // }
+
             } catch (IOException e) {
                 System.err.println("Ошибка при получении сообщения.");
                 e.printStackTrace();
