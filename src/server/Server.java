@@ -1,7 +1,6 @@
 package server;
 
 import main.Const;
-import org.apache.commons.io.IOUtils;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -53,7 +52,6 @@ public class Server {
         private PrintWriter out;
         private Socket socket;
         private String name = "";
-        private FileInputStream inputFile;
 
         public Connection(Socket socket) {
             this.socket = socket;
@@ -61,11 +59,7 @@ public class Server {
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out = new PrintWriter(socket.getOutputStream(), true);
 
-                File file = new File("input.txt");
-                inputFile = new FileInputStream(file);
-                byte[] toByteArray = IOUtils.toByteArray(inputFile);
-                System.out.println("Server is ok after file reading.");
-                socket.getOutputStream().write(toByteArray);
+
 
 
             } catch (IOException e) {
@@ -83,7 +77,7 @@ public class Server {
                 synchronized(connections) {
                     Iterator<Connection> iter = connections.iterator();
                     while(iter.hasNext()) {
-                        ((Connection) iter.next()).out.println(" * " +name + " comes now" + " / ");
+                        ((Connection) iter.next()).out.println(name + " comes now");
                     }
                 }
             } catch (IOException e) {

@@ -9,7 +9,6 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.*;
 import java.net.Socket;
-import java.util.Scanner;
 
 /**
  * Created by Irina on 20.09.2016.
@@ -23,9 +22,13 @@ public class ChatInterface extends JFrame {
     private JTextArea chatTextArea;
     private JTextArea yourMessageTextArea;
     private JButton sendMessageButton;
+    private JButton sendFileButton;
     private BufferedReader in;
     private PrintWriter out;
     private Socket socket;
+    private Socket socketFile;
+    private FileInputStream inputFile;
+    private FileOutputStream outputFile;
     private DataOutputStream outputStream;
 
     String ip;
@@ -46,6 +49,7 @@ public class ChatInterface extends JFrame {
                 nickname = yourNicknameTextField.getText();
                 try {
                     socket = new Socket(ip, Const.Port);
+
                     if (socket.isConnected()){
                         System.out.println("connected");}
                     else {
@@ -55,17 +59,24 @@ public class ChatInterface extends JFrame {
                     out = new PrintWriter(socket.getOutputStream(), true);
                     out.println(nickname);
 
-
-
                     ReSender reader = new ReSender();
                     reader.start();
                 } catch (Exception e1) {
                     System.out.println("Ошибка при подключении к серверу и получению потоков (in и out) для передачи сообщений");
                     e1.printStackTrace();
                 }
+
                 connectButton.setVisible(false);
                 serverIPTextField.setEnabled(false);
                 yourNicknameTextField.setEnabled(false);
+            }
+        });
+
+        sendFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+
             }
         });
 
@@ -73,7 +84,7 @@ public class ChatInterface extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String str = yourMessageTextArea.getText();
-                out.println(" * " + str + " / ");
+                out.println(str);
 
             }
         });
@@ -97,6 +108,7 @@ public class ChatInterface extends JFrame {
         });
 
         setVisible(true);
+
     }
 
     private void close() {
@@ -118,46 +130,14 @@ public class ChatInterface extends JFrame {
 
         @Override
         public void run() {
-
             try {
 
-               // while (!stoped) {
-                    //String str = in.readLine();
-
-                            
-                Scanner sc = new Scanner(in);
-                String str = sc.next();
-                while (sc.hasNext()) {
-                for (int i = 0; i < str.length(); i++) {
-                    if (str.charAt(i) == '*') {
-                        while (str.charAt(i) != '/') {
-
-                            chatTextArea.append(str);
-                            chatTextArea.append("\n");
-
-                            System.out.println(str + " Это текстовое сообщение");
-                        }
-
-
-                    } else {
-                        if (str.charAt(i) != '*') {
-                            while (str.charAt(i) != '*') {
-                                outputStream = new DataOutputStream(new FileOutputStream("output.txt"));
-                                outputStream.writeBytes(str);
-
-                                System.out.println(str + " Это текст из файла");
-
-                            }
-                        }
-                    }
+                while (!stoped) {
+                    String str = in.readLine();
+                    chatTextArea.append(str);
+                    chatTextArea.append("\n");
+                    System.out.println(str + " Это текстовое сообщение");
                 }
-                }
-                sc.close();
-
-                    //}
-                    //System.out.println(str);
-               // }
-
             } catch (IOException e) {
                 System.err.println("Ошибка при получении сообщения.");
                 e.printStackTrace();
@@ -165,6 +145,7 @@ public class ChatInterface extends JFrame {
         }
     }
 }
+
 
 
 

@@ -1,5 +1,6 @@
 package form;
 import client.Client;
+import server.FileServer;
 import server.Server;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -28,6 +29,7 @@ public class ClientServerDialog extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new Server();
+                new FileServer();
             }
         });
         setVisible(true);

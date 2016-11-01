@@ -4,4 +4,5 @@ package main;
  */
 public abstract class Const {
     public static final int Port = 8283;
+    public static final int PortFile = 8284;
 }
